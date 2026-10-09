@@ -1,6 +1,6 @@
 # Spec: Twingate Toggle
 
-Baseline spec of the extension as of 1.3.0. New work should update this file
+Baseline spec of the extension as of 1.3.0, plus the 1.4.0 resources menu. New work should update this file
 first, then the code.
 
 ## Objective
@@ -19,6 +19,9 @@ User stories:
 - As a user, when starting or stopping needs my password, GNOME's password
   dialog appears.
 - As a user, when a start or stop fails, I get a notification that says why.
+- As a user, I open the tile's menu and see who I'm signed in as and which
+  resources I can reach; clicking a resource copies its address, or signs me
+  in to it when it needs authentication.
 - As a new user, one script installs the extension and helps me install and
   set up the Twingate client.
 
@@ -29,7 +32,7 @@ User stories:
 - GObject Introspection: `Gio`, `GLib`, `GObject`
 - systemd over the D-Bus system bus (`twingate.service` unit signals)
 - systemd `StartUnit`/`StopUnit` over D-Bus, authorized by polkit
-- External programs: `twingate` CLI (status only)
+- External programs: `twingate` CLI (`status`, `status -v`, `resources`, `auth`)
 - Bash for `install.sh` and `uninstall.sh`
 - No package manager, no build step, no runtime dependencies to install
 
@@ -37,6 +40,8 @@ User stories:
 
 ```
 Syntax check JS:   node --input-type=module --check < extension.js
+                   node --input-type=module --check < lib.js
+Unit tests:        gjs -m test.gjs
 Syntax check sh:   bash -n install.sh && bash -n uninstall.sh
 Install / update:  ./install.sh        (then log out and back in on Wayland)
 Uninstall:         ./uninstall.sh
@@ -44,12 +49,14 @@ Extension status:  gnome-extensions info twingate-toggle@local
 Logs:              journalctl --user -b | grep -i twingate
 ```
 
-There is no build. "The build passes" means both syntax checks pass.
+There is no build. "The build passes" means the syntax checks and `gjs -m test.gjs` pass.
 
 ## Project Structure
 
 ```
-extension.js    → the whole extension (toggle, indicator, CLI helpers)
+extension.js    → the extension (toggle, menu, indicator, CLI helpers)
+lib.js          → pure parsers for `twingate` output (no Shell imports)
+test.gjs        → assert-based tests for lib.js
 metadata.json   → uuid, supported shell versions, version + version-name
 install.sh      → per-user install, client setup, enable
 uninstall.sh    → disable, remove files and cache
@@ -97,6 +104,23 @@ No runtime files. `uninstall.sh` still removes the old 1.2.0 cache files
   state does not match what the user asked. On failure, notify with the
   D-Bus error message, or "Twingate did not start/stop."
 
+### Resources menu (1.4.0)
+
+- The tile is a `QuickMenuToggle`: clicking the tile still starts/stops,
+  the arrow opens the menu.
+- Menu header: the status, plus the user from `twingate status -v`
+  (`Online: <user>`) when there is one.
+- Opening the menu runs `twingate resources` once (not on the poll timer)
+  and lists one row per resource: name, then alias if set (`-` = none),
+  else address.
+- Parsing (`parseResources` in `lib.js`): tab-separated, first line is the
+  header, columns name / address / alias / auth status, cells trimmed, blank
+  lines skipped. Output without that header (offline, error) → no rows.
+- No rows → one insensitive row "No resources" (or the status when off).
+- Clicking a row copies alias-or-address to the clipboard. If its auth status
+  is not empty, clicking runs `twingate auth <name>` (argv, no shell) instead.
+- Status parsing moves to `parseStatus` in `lib.js`, behavior unchanged.
+
 ### Disable
 
 - `disable()` destroys the toggle and indicator, unsubscribes the D-Bus
@@ -141,9 +165,9 @@ await new Promise(resolve => {
 
 ## Testing Strategy
 
-Today there are no automated tests.
-
-- **Every change:** both syntax checks in Commands.
+- **Every change:** the syntax checks and `gjs -m test.gjs` in Commands.
+- **Unit tests:** `lib.js` parsers, with fixtures copied from real
+  `twingate` output.
 - **Manual check in a real session** (needs log out/in on Wayland, or a nested
   shell: `dbus-run-session -- gnome-shell --nested --wayland`):
   1. Tile shows the right state at login, with Twingate on and off.
@@ -152,14 +176,12 @@ Today there are no automated tests.
   4. `sudo systemctl stop twingate` in a terminal → tile turns off within ~1 s.
   5. Cancel the password window → notification with the polkit error.
   6. Disable the extension → no errors in `journalctl --user -b`.
-- **Proposed (see Open Questions):** move the status parsing into a pure
-  function and test it with a small `gjs -m` script with asserts. It is the
-  only logic that can be tested without a running shell.
+  7. Open the menu → user and resources shown; click a row → address in clipboard.
 
 ## Boundaries
 
-- **Always:** run both syntax checks before a commit; keep the extension a
-  single `extension.js` unless that becomes a real problem; clean up every
+- **Always:** run both syntax checks before a commit; keep the extension to
+  `extension.js` plus the Shell-free `lib.js`; clean up every
   timer/signal on destroy; update README, CHANGELOG and `metadata.json`
   version with user-visible changes.
 - **Ask first:** adding a dependency or a build step; adding a supported
@@ -188,8 +210,7 @@ The baseline is met when all of these hold:
 1. **README intro** and 2. **French strings**: resolved in 1.3.0.
 3. **Shell versions.** Only 46–48 are listed. Should 49+ be supported? That
    needs testing on those versions.
-4. **Unit tests.** OK to extract the status parsing into a pure function and
-   add a `gjs` assert script (no new dependency)?
+4. **Unit tests.** Resolved in 1.4.0: `lib.js` + `test.gjs`.
 5. **Uninstall** disables the extension but leaves it in `enabled-extensions`.
    Should it remove the entry too?
 6. **Installed copy is old.** `gnome-extensions info` shows version 1 installed;
