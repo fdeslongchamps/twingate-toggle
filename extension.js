@@ -1,13 +1,14 @@
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
+import St from 'gi://St';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import {QuickMenuToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
-import {parseStatus, parseResources} from './lib.js';
+import {parseStatus, parseResources, resourceAction} from './lib.js';
 
 Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async');
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
@@ -150,11 +151,28 @@ class TwingateToggle extends QuickMenuToggle {
 
         this.menu.setHeader('network-vpn-symbolic', 'Twingate', header);
         this._resources.removeAll();
-        for (const r of resources)
-            this._resources.addMenuItem(new PopupMenu.PopupMenuItem(`${r.name}  ${r.alias || r.address}`));
+        for (const r of resources) {
+            const item = new PopupMenu.PopupMenuItem(`${r.name}  ${r.alias || r.address}`);
+            item.connect('activate', () => this._onResource(r));
+            this._resources.addMenuItem(item);
+        }
         if (!resources.length) {
             this._resources.addMenuItem(new PopupMenu.PopupMenuItem(
                 this.checked ? 'No resources' : this.subtitle ?? 'Off', {reactive: false}));
+        }
+    }
+
+    _onResource(r) {
+        const [action, arg] = resourceAction(r);
+        if (action === 'copy') {
+            St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, arg);
+            return;
+        }
+        // Not awaited: auth opens the browser and may run until sign-in ends.
+        try {
+            Gio.Subprocess.new(['twingate', 'auth', arg], Gio.SubprocessFlags.NONE);
+        } catch (e) {
+            Main.notify('Twingate', `Cannot sign in to ${arg}: ${e.message}`);
         }
     }
 

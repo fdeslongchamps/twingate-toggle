@@ -23,3 +23,8 @@ export function parseResources(text) {
         return {name, address, alias: alias ?? '', auth: auth ?? ''};
     });
 }
+
+// What clicking a resource row does: sign in if it needs auth, else copy.
+export function resourceAction(r) {
+    return r.auth ? ['auth', r.name] : ['copy', r.alias || r.address];
+}

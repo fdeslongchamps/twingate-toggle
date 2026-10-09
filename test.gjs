@@ -1,5 +1,5 @@
 // Run with: gjs -m test.gjs
-import {parseStatus, parseResources} from './lib.js';
+import {parseStatus, parseResources, resourceAction} from './lib.js';
 
 function eq(actual, expected, what) {
     const a = JSON.stringify(actual), e = JSON.stringify(expected);
@@ -26,5 +26,12 @@ eq(parseResources('RESOURCE NAME\tADDRESS\tALIAS\tAUTH STATUS\n' +
     [{name: 'DB', address: 'db.internal', alias: 'db.corp', auth: 'Auth required'}], 'alias + auth');
 eq(parseResources('Twingate is not running\n'), [], 'no header');
 eq(parseResources(''), [], 'empty');
+
+eq(resourceAction({name: 'DB', address: 'db.internal', alias: 'db.corp', auth: ''}),
+    ['copy', 'db.corp'], 'copy alias');
+eq(resourceAction({name: 'Home', address: '192.168.2.0/24', alias: '', auth: ''}),
+    ['copy', '192.168.2.0/24'], 'copy address');
+eq(resourceAction({name: 'DB', address: 'db.internal', alias: '', auth: 'Auth required'}),
+    ['auth', 'DB'], 'auth when status set');
 
 print('ok');

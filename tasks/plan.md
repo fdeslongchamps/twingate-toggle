@@ -8,6 +8,6 @@ Spec: `SPEC.md` → Behavior → Resources menu.
       extension uses `parseStatus`.
 - [x] 3. Menu toggle: `QuickMenuToggle`, header (status + user), resource rows
       loaded on menu open. Accept: syntax checks pass; manual check 7 shows rows.
-- [ ] 4. Row actions: click copies alias-or-address; auth status set → `twingate auth <name>`.
+- [x] 4. Row actions: click copies alias-or-address; auth status set → `twingate auth <name>`.
       Accept: manual check 7.
 - [ ] 5. Release: README, CHANGELOG, metadata 1.4.0.
