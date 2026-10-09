@@ -30,35 +30,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "extension.js",
+      "community_name": "Behavior (current, 1.4.0)",
       "file_type": "code",
       "norm_label": "twingatetoggleextension",
       "source_file": "extension.js",
-      "source_location": "L180"
-    },
-    {
-      "id": "extension_runaction",
-      "label": "runAction()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "runaction()",
-      "source_file": "extension.js",
-      "source_location": "L30"
-    },
-    {
-      "id": "extension_runstatus",
-      "label": "runStatus()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "runstatus()",
-      "source_file": "extension.js",
-      "source_location": "L20"
+      "source_location": "L234"
     },
     {
       "id": "extension_twingatetoggleextension_disable",
@@ -66,11 +42,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "extension.js",
+      "community_name": "Behavior (current, 1.4.0)",
       "file_type": "code",
       "norm_label": ".disable()",
       "source_file": "extension.js",
-      "source_location": "L186"
+      "source_location": "L240"
     },
     {
       "id": "extension_twingatetoggleextension_enable",
@@ -78,11 +54,71 @@
       "_callable": true,
       "_origin": "ast",
       "community": 0,
-      "community_name": "extension.js",
+      "community_name": "Behavior (current, 1.4.0)",
       "file_type": "code",
       "norm_label": ".enable()",
       "source_file": "extension.js",
-      "source_location": "L181"
+      "source_location": "L235"
+    },
+    {
+      "id": "extension_runaction",
+      "label": "runAction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "runaction()",
+      "source_file": "extension.js",
+      "source_location": "L37"
+    },
+    {
+      "id": "extension_runtwingate",
+      "label": "runTwingate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "runtwingate()",
+      "source_file": "extension.js",
+      "source_location": "L27"
+    },
+    {
+      "id": "lib_parseresources",
+      "label": "parseResources()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "parseresources()",
+      "source_file": "lib.js",
+      "source_location": "L16"
+    },
+    {
+      "id": "lib_parsestatus",
+      "label": "parseStatus()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "parsestatus()",
+      "source_file": "lib.js",
+      "source_location": "L3"
+    },
+    {
+      "id": "lib_resourceaction",
+      "label": "resourceAction()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "resourceaction()",
+      "source_file": "lib.js",
+      "source_location": "L28"
     },
     {
       "id": "docs_ideas_first_run_setup_desktop_notifier",
@@ -180,13 +216,29 @@
       "source_url": null
     },
     {
+      "id": "docs_ideas_first_run_setup_ego_review_guidelines",
+      "label": "extensions.gnome.org Review Guidelines",
+      "_origin": "ast",
+      "author": null,
+      "captured_at": null,
+      "community": 4,
+      "community_name": "Install and Set Up Twingate Step",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "extensions.gnome.org review guidelines",
+      "rationale": "Privileged subprocesses must be avoided; if needed, pkexec on a non-user-modifiable executable. Current sudo+askpass in ~/.cache likely rejected.",
+      "source_file": "docs/ideas/first-run-setup.md",
+      "source_location": "L70",
+      "source_url": null
+    },
+    {
       "id": "docs_ideas_first_run_setup_install_setup_step",
       "label": "Install and Set Up Twingate Step",
       "_origin": "ast",
       "author": null,
       "captured_at": null,
-      "community": 2,
-      "community_name": "Behavior (current, 1.3.0)",
+      "community": 4,
+      "community_name": "Install and Set Up Twingate Step",
       "contributor": null,
       "file_type": "concept",
       "norm_label": "install and set up twingate step",
@@ -201,45 +253,13 @@
       "_origin": "ast",
       "author": null,
       "captured_at": null,
-      "community": 2,
-      "community_name": "Behavior (current, 1.3.0)",
+      "community": 4,
+      "community_name": "Install and Set Up Twingate Step",
       "contributor": null,
       "file_type": "concept",
       "norm_label": "official twingate install script (apt/rpm repo)",
       "source_file": "docs/ideas/first-run-setup.md",
       "source_location": "L63",
-      "source_url": null
-    },
-    {
-      "id": "docs_ideas_first_run_setup_twingate_setup_command",
-      "label": "twingate setup (interactive, root)",
-      "_origin": "ast",
-      "author": null,
-      "captured_at": null,
-      "community": 2,
-      "community_name": "Behavior (current, 1.3.0)",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "twingate setup (interactive, root)",
-      "rationale": "Feeding answers on stdin is fragile; Terms must be accepted by the user, never answered automatically.",
-      "source_file": "docs/ideas/first-run-setup.md",
-      "source_location": "L56",
-      "source_url": null
-    },
-    {
-      "id": "docs_ideas_first_run_setup_ego_review_guidelines",
-      "label": "extensions.gnome.org Review Guidelines",
-      "_origin": "ast",
-      "author": null,
-      "captured_at": null,
-      "community": 4,
-      "community_name": "Paste-This Terminal Step (Copy / Open Terminal)",
-      "contributor": null,
-      "file_type": "concept",
-      "norm_label": "extensions.gnome.org review guidelines",
-      "rationale": "Privileged subprocesses must be avoided; if needed, pkexec on a non-user-modifiable executable. Current sudo+askpass in ~/.cache likely rejected.",
-      "source_file": "docs/ideas/first-run-setup.md",
-      "source_location": "L70",
       "source_url": null
     },
     {
@@ -249,7 +269,7 @@
       "author": null,
       "captured_at": null,
       "community": 4,
-      "community_name": "Paste-This Terminal Step (Copy / Open Terminal)",
+      "community_name": "Install and Set Up Twingate Step",
       "contributor": null,
       "file_type": "concept",
       "norm_label": "don't ask again polkit rule",
@@ -259,13 +279,29 @@
       "source_url": null
     },
     {
+      "id": "docs_ideas_first_run_setup_twingate_setup_command",
+      "label": "twingate setup (interactive, root)",
+      "_origin": "ast",
+      "author": null,
+      "captured_at": null,
+      "community": 4,
+      "community_name": "Install and Set Up Twingate Step",
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "twingate setup (interactive, root)",
+      "rationale": "Feeding answers on stdin is fragile; Terms must be accepted by the user, never answered automatically.",
+      "source_file": "docs/ideas/first-run-setup.md",
+      "source_location": "L56",
+      "source_url": null
+    },
+    {
       "id": "docs_ideas_first_run_setup_no_root_principle",
       "label": "Extension Never Runs Anything as Root",
       "_origin": "ast",
       "author": null,
       "captured_at": null,
       "community": 4,
-      "community_name": "Paste-This Terminal Step (Copy / Open Terminal)",
+      "community_name": "Install and Set Up Twingate Step",
       "contributor": null,
       "file_type": "rationale",
       "norm_label": "extension never runs anything as root",
@@ -281,7 +317,7 @@
       "author": null,
       "captured_at": null,
       "community": 4,
-      "community_name": "Paste-This Terminal Step (Copy / Open Terminal)",
+      "community_name": "Install and Set Up Twingate Step",
       "contributor": null,
       "file_type": "rationale",
       "norm_label": "paste-this terminal step (copy / open terminal)",
@@ -297,7 +333,7 @@
       "author": null,
       "captured_at": null,
       "community": 4,
-      "community_name": "Paste-This Terminal Step (Copy / Open Terminal)",
+      "community_name": "Install and Set Up Twingate Step",
       "contributor": null,
       "file_type": "rationale",
       "norm_label": "start/stop via systemd d-bus startunit/stopunit",
@@ -307,49 +343,75 @@
       "source_url": null
     },
     {
-      "id": "extension",
-      "label": "extension.js",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "extension.js",
-      "source_file": "extension.js",
-      "source_location": "L1"
-    },
-    {
       "id": "extension_twingateindicator",
       "label": "TwingateIndicator",
       "_origin": "ast",
       "community": 0,
-      "community_name": "extension.js",
+      "community_name": "Behavior (current, 1.4.0)",
       "file_type": "code",
       "norm_label": "twingateindicator",
       "source_file": "extension.js",
-      "source_location": "L164"
+      "source_location": "L218"
     },
     {
-      "id": "extension_twingatetoggle",
-      "label": "TwingateToggle",
+      "id": "spec_behavior_current_1_4_0",
+      "label": "Behavior (current, 1.4.0)",
       "_origin": "ast",
       "community": 0,
-      "community_name": "extension.js",
-      "file_type": "code",
-      "norm_label": "twingatetoggle",
-      "source_file": "extension.js",
-      "source_location": "L46"
+      "community_name": "Behavior (current, 1.4.0)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "behavior (current, 1.4.0)",
+      "source_file": "SPEC.md",
+      "source_location": "L73"
     },
     {
       "id": "spec_disable",
       "label": "Disable",
       "_origin": "ast",
       "community": 0,
-      "community_name": "extension.js",
+      "community_name": "Behavior (current, 1.4.0)",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "disable",
       "source_file": "SPEC.md",
-      "source_location": "L100"
+      "source_location": "L125"
+    },
+    {
+      "id": "spec_refresh",
+      "label": "Refresh",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Behavior (current, 1.4.0)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "refresh",
+      "source_file": "SPEC.md",
+      "source_location": "L86"
+    },
+    {
+      "id": "spec_start_stop",
+      "label": "Start / stop",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Behavior (current, 1.4.0)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "start / stop",
+      "source_file": "SPEC.md",
+      "source_location": "L95"
+    },
+    {
+      "id": "spec_state",
+      "label": "State",
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "Behavior (current, 1.4.0)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "state",
+      "source_file": "SPEC.md",
+      "source_location": "L75"
     },
     {
       "id": "spec_boundaries",
@@ -361,67 +423,7 @@
       "node_kind": "heading",
       "norm_label": "boundaries",
       "source_file": "SPEC.md",
-      "source_location": "L159"
-    },
-    {
-      "id": "spec_behavior_current_1_3_0",
-      "label": "Behavior (current, 1.3.0)",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "Behavior (current, 1.3.0)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "behavior (current, 1.3.0)",
-      "source_file": "SPEC.md",
-      "source_location": "L65"
-    },
-    {
-      "id": "spec_install_script",
-      "label": "Install script",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "Behavior (current, 1.3.0)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "install script",
-      "source_file": "SPEC.md",
-      "source_location": "L105"
-    },
-    {
-      "id": "spec_refresh",
-      "label": "Refresh",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "Behavior (current, 1.3.0)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "refresh",
-      "source_file": "SPEC.md",
-      "source_location": "L78"
-    },
-    {
-      "id": "spec_start_stop",
-      "label": "Start / stop",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "Behavior (current, 1.3.0)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "start / stop",
-      "source_file": "SPEC.md",
-      "source_location": "L87"
-    },
-    {
-      "id": "spec_state",
-      "label": "State",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "Behavior (current, 1.3.0)",
-      "file_type": "document",
-      "node_kind": "heading",
-      "norm_label": "state",
-      "source_file": "SPEC.md",
-      "source_location": "L67"
+      "source_location": "L182"
     },
     {
       "id": "changelog",
@@ -445,7 +447,7 @@
       "node_kind": "heading",
       "norm_label": "1.0.0",
       "source_file": "CHANGELOG.md",
-      "source_location": "L23"
+      "source_location": "L39"
     },
     {
       "id": "changelog_1_1_0",
@@ -457,7 +459,7 @@
       "node_kind": "heading",
       "norm_label": "1.1.0",
       "source_file": "CHANGELOG.md",
-      "source_location": "L18"
+      "source_location": "L34"
     },
     {
       "id": "changelog_1_2_0",
@@ -469,7 +471,7 @@
       "node_kind": "heading",
       "norm_label": "1.2.0",
       "source_file": "CHANGELOG.md",
-      "source_location": "L12"
+      "source_location": "L28"
     },
     {
       "id": "changelog_1_3_0",
@@ -480,6 +482,42 @@
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "1.3.0",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L19"
+    },
+    {
+      "id": "changelog_1_4_0",
+      "label": "1.4.0",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Changelog",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.4.0",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L13"
+    },
+    {
+      "id": "changelog_1_4_1",
+      "label": "1.4.1",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Changelog",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.4.1",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L8"
+    },
+    {
+      "id": "changelog_1_4_2",
+      "label": "1.4.2",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "Changelog",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "1.4.2",
       "source_file": "CHANGELOG.md",
       "source_location": "L3"
     },
@@ -494,6 +532,18 @@
       "norm_label": "changelog",
       "source_file": "CHANGELOG.md",
       "source_location": "L1"
+    },
+    {
+      "id": "spec_install_script",
+      "label": "Install script",
+      "_origin": "ast",
+      "community": 4,
+      "community_name": "Install and Set Up Twingate Step",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "install script",
+      "source_file": "SPEC.md",
+      "source_location": "L130"
     },
     {
       "id": "spec",
@@ -517,7 +567,7 @@
       "node_kind": "heading",
       "norm_label": "code style",
       "source_file": "SPEC.md",
-      "source_location": "L120"
+      "source_location": "L145"
     },
     {
       "id": "spec_commands",
@@ -529,7 +579,7 @@
       "node_kind": "heading",
       "norm_label": "commands",
       "source_file": "SPEC.md",
-      "source_location": "L36"
+      "source_location": "L39"
     },
     {
       "id": "spec_objective",
@@ -553,7 +603,7 @@
       "node_kind": "heading",
       "norm_label": "open questions",
       "source_file": "SPEC.md",
-      "source_location": "L186"
+      "source_location": "L209"
     },
     {
       "id": "spec_project_structure",
@@ -565,7 +615,7 @@
       "node_kind": "heading",
       "norm_label": "project structure",
       "source_file": "SPEC.md",
-      "source_location": "L49"
+      "source_location": "L54"
     },
     {
       "id": "spec_spec_twingate_toggle",
@@ -589,7 +639,7 @@
       "node_kind": "heading",
       "norm_label": "success criteria",
       "source_file": "SPEC.md",
-      "source_location": "L173"
+      "source_location": "L196"
     },
     {
       "id": "spec_tech_stack",
@@ -601,7 +651,7 @@
       "node_kind": "heading",
       "norm_label": "tech stack",
       "source_file": "SPEC.md",
-      "source_location": "L25"
+      "source_location": "L28"
     },
     {
       "id": "spec_testing_strategy",
@@ -613,7 +663,7 @@
       "node_kind": "heading",
       "norm_label": "testing strategy",
       "source_file": "SPEC.md",
-      "source_location": "L142"
+      "source_location": "L167"
     },
     {
       "id": "install",
@@ -727,7 +777,7 @@
       "node_kind": "heading",
       "norm_label": "install",
       "source_file": "README.md",
-      "source_location": "L23"
+      "source_location": "L26"
     },
     {
       "id": "readme_requirements",
@@ -739,7 +789,7 @@
       "node_kind": "heading",
       "norm_label": "requirements",
       "source_file": "README.md",
-      "source_location": "L16"
+      "source_location": "L19"
     },
     {
       "id": "readme_troubleshooting",
@@ -751,7 +801,7 @@
       "node_kind": "heading",
       "norm_label": "troubleshooting",
       "source_file": "README.md",
-      "source_location": "L42"
+      "source_location": "L45"
     },
     {
       "id": "readme_twingate_toggle",
@@ -775,7 +825,7 @@
       "node_kind": "heading",
       "norm_label": "uninstall",
       "source_file": "README.md",
-      "source_location": "L36"
+      "source_location": "L39"
     },
     {
       "id": "uninstall",
@@ -808,9 +858,89 @@
       "source_location": "L1"
     },
     {
+      "id": "extension",
+      "label": "extension.js",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "extension.js",
+      "source_file": "extension.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "extension_icon",
+      "label": "ICON",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "icon",
+      "source_file": "extension.js",
+      "source_location": "L23"
+    },
+    {
+      "id": "extension_twingatetoggle",
+      "label": "TwingateToggle",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "twingatetoggle",
+      "source_file": "extension.js",
+      "source_location": "L53"
+    },
+    {
+      "id": "lib",
+      "label": "lib.js",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "code",
+      "norm_label": "lib.js",
+      "source_file": "lib.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "spec_resources_menu_1_4_0",
+      "label": "Resources menu (1.4.0)",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "resources menu (1.4.0)",
+      "source_file": "SPEC.md",
+      "source_location": "L108"
+    },
+    {
+      "id": "tasks_plan",
+      "label": "plan.md",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "plan.md",
+      "source_file": "tasks/plan.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tasks_plan_plan_resources_menu_1_4_0",
+      "label": "Plan: resources menu (1.4.0)",
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "extension.js",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "plan: resources menu (1.4.0)",
+      "source_file": "tasks/plan.md",
+      "source_location": "L1"
+    },
+    {
       "id": "ref_gi",
       "label": "ref_gi",
-      "community": 0,
+      "community": 9,
       "community_name": "extension.js",
       "external": true,
       "file_type": "concept",
@@ -821,7 +951,7 @@
     {
       "id": "ref_resource",
       "label": "ref_resource",
-      "community": 0,
+      "community": 9,
       "community_name": "extension.js",
       "external": true,
       "file_type": "concept",
@@ -840,7 +970,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "extension.js",
-      "source_location": "L182",
+      "source_location": "L236",
       "weight": 1.0
     },
     {
@@ -893,6 +1023,54 @@
     },
     {
       "source": "extension",
+      "target": "lib_parseresources",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "extension.js",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "extension",
+      "target": "lib_parsestatus",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "extension.js",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "extension",
+      "target": "lib_resourceaction",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "extension.js",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "extension",
+      "target": "lib",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "extension.js",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "extension",
       "target": "ref_gi",
       "relation": "imports_from",
       "_origin": "ast",
@@ -900,7 +1078,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "extension.js",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -912,7 +1090,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "extension.js",
-      "source_location": "L7",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -939,35 +1117,13 @@
     },
     {
       "source": "changelog_changelog",
-      "target": "changelog_1_2_0",
+      "target": "changelog_1_4_0",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "changelog_changelog",
-      "target": "changelog_1_1_0",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CHANGELOG.md",
-      "source_location": "L18",
-      "weight": 1.0
-    },
-    {
-      "source": "changelog_changelog",
-      "target": "changelog_1_0_0",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "CHANGELOG.md",
-      "source_location": "L23",
+      "source_location": "L13",
       "weight": 1.0
     },
     {
@@ -978,7 +1134,62 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_changelog",
+      "target": "changelog_1_2_0",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CHANGELOG.md",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_changelog",
+      "target": "changelog_1_4_2",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CHANGELOG.md",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_changelog",
+      "target": "changelog_1_1_0",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CHANGELOG.md",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_changelog",
+      "target": "changelog_1_0_0",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CHANGELOG.md",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "changelog_changelog",
+      "target": "changelog_1_4_1",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "CHANGELOG.md",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -989,7 +1200,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "extension.js",
-      "source_location": "L164",
+      "source_location": "L218",
+      "weight": 1.0
+    },
+    {
+      "source": "extension",
+      "target": "extension_icon",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "extension.js",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -1000,18 +1222,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "extension.js",
-      "source_location": "L180",
+      "source_location": "L234",
       "weight": 1.0
     },
     {
       "source": "extension",
-      "target": "extension_runstatus",
+      "target": "extension_runtwingate",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "extension.js",
-      "source_location": "L20",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -1022,7 +1244,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "extension.js",
-      "source_location": "L30",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -1033,7 +1255,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "extension.js",
-      "source_location": "L46",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -1045,6 +1267,39 @@
       "confidence_score": 1.0,
       "source_file": "install.sh",
       "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "lib",
+      "target": "lib_parseresources",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib.js",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "lib",
+      "target": "lib_resourceaction",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib.js",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "lib",
+      "target": "lib_parsestatus",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "lib.js",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -1066,7 +1321,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L16",
+      "source_location": "L19",
       "weight": 1.0
     },
     {
@@ -1077,7 +1332,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L23",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -1088,7 +1343,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L36",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -1099,7 +1354,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L42",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -1114,58 +1369,69 @@
       "weight": 1.0
     },
     {
-      "source": "spec_behavior_current_1_3_0",
+      "source": "spec_behavior_current_1_4_0",
+      "target": "spec_resources_menu_1_4_0",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "SPEC.md",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "spec_behavior_current_1_4_0",
       "target": "spec_disable",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L100",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
-      "source": "spec_behavior_current_1_3_0",
+      "source": "spec_behavior_current_1_4_0",
       "target": "spec_install_script",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L105",
+      "source_location": "L130",
       "weight": 1.0
     },
     {
-      "source": "spec_behavior_current_1_3_0",
+      "source": "spec_behavior_current_1_4_0",
       "target": "spec_state",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L67",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
-      "source": "spec_behavior_current_1_3_0",
+      "source": "spec_behavior_current_1_4_0",
       "target": "spec_refresh",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L78",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
-      "source": "spec_behavior_current_1_3_0",
+      "source": "spec_behavior_current_1_4_0",
       "target": "spec_start_stop",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L87",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -1176,7 +1442,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L120",
+      "source_location": "L145",
       "weight": 1.0
     },
     {
@@ -1187,7 +1453,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L142",
+      "source_location": "L167",
       "weight": 1.0
     },
     {
@@ -1198,7 +1464,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L159",
+      "source_location": "L182",
       "weight": 1.0
     },
     {
@@ -1209,7 +1475,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L173",
+      "source_location": "L196",
       "weight": 1.0
     },
     {
@@ -1220,7 +1486,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L186",
+      "source_location": "L209",
       "weight": 1.0
     },
     {
@@ -1231,7 +1497,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L25",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -1242,7 +1508,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L36",
+      "source_location": "L39",
       "weight": 1.0
     },
     {
@@ -1253,7 +1519,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L49",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -1269,13 +1535,24 @@
     },
     {
       "source": "spec_spec_twingate_toggle",
-      "target": "spec_behavior_current_1_3_0",
+      "target": "spec_behavior_current_1_4_0",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "SPEC.md",
-      "source_location": "L65",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan",
+      "target": "tasks_plan_plan_resources_menu_1_4_0",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L1",
       "weight": 1.0
     },
     {
@@ -1374,7 +1651,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "extension.js",
-      "source_location": "L181",
+      "source_location": "L235",
       "weight": 1.0
     },
     {
@@ -1385,7 +1662,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "extension.js",
-      "source_location": "L186",
+      "source_location": "L240",
       "weight": 1.0
     },
     {
@@ -1518,7 +1795,55 @@
       "confidence_score": 0.95,
       "context": "disable()",
       "source_file": "SPEC.md",
-      "source_location": "L102",
+      "source_location": "L127",
+      "weight": 1.0
+    },
+    {
+      "source": "spec_resources_menu_1_4_0",
+      "target": "lib_parseresources",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "parseResources",
+      "source_file": "SPEC.md",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_plan_resources_menu_1_4_0",
+      "target": "lib_parseresources",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "parseResources",
+      "source_file": "tasks/plan.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "spec_resources_menu_1_4_0",
+      "target": "lib_parsestatus",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "parseStatus",
+      "source_file": "SPEC.md",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_plan_resources_menu_1_4_0",
+      "target": "lib_parsestatus",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "parseStatus",
+      "source_file": "tasks/plan.md",
+      "source_location": "L6",
       "weight": 1.0
     }
   ],
@@ -1539,5 +1864,5 @@
       "source_file": "docs/ideas/first-run-setup.md"
     }
   ],
-  "built_at_commit": "7f55b0065b8d531c961940d1cbf3d4b3ada7665f"
+  "built_at_commit": "0095ce4bb2423445228012fd1f4865eee3a44d6e"
 }
