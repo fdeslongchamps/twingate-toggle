@@ -4,9 +4,10 @@ import GLib from 'gi://GLib';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import {QuickToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
+import {QuickMenuToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
-import {parseStatus} from './lib.js';
+import {parseStatus, parseResources} from './lib.js';
 
 Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async');
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
@@ -18,10 +19,10 @@ const FAST_POLL_MS = 2000;
 const SIGNAL_DEBOUNCE_MS = 300;
 const UNIT_PATH = '/org/freedesktop/systemd1/unit/twingate_2eservice';
 
-// Short command whose output we read directly (twingate status).
-async function runStatus() {
+// Short command whose output we read directly (twingate status, resources).
+async function runTwingate(...args) {
     const proc = Gio.Subprocess.new(
-        ['twingate', 'status'],
+        ['twingate', ...args],
         Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_MERGE);
     const [stdout] = await proc.communicate_utf8_async(null, null);
     return stdout ?? '';
@@ -46,7 +47,7 @@ async function runAction(sub) {
 }
 
 const TwingateToggle = GObject.registerClass(
-class TwingateToggle extends QuickToggle {
+class TwingateToggle extends QuickMenuToggle {
     constructor() {
         super({
             title: 'Twingate',
@@ -61,6 +62,15 @@ class TwingateToggle extends QuickToggle {
 
         // 'clicked' only fires on a real user click, not when we set `checked`.
         this.connect('clicked', () => this._onClicked());
+
+        this.menu.setHeader('network-vpn-symbolic', 'Twingate');
+        this._resources = new PopupMenu.PopupMenuSection();
+        this.menu.addMenuItem(this._resources);
+        // Read resources only when the menu opens, not on the poll timer.
+        this.menu.connect('open-state-changed', (menu, open) => {
+            if (open)
+                this._loadMenu();
+        });
 
         // systemd only emits unit signals once some client has subscribed.
         // shortcut: never Unsubscribe, since that would also drop the shared
@@ -125,13 +135,36 @@ class TwingateToggle extends QuickToggle {
         }
     }
 
+    async _loadMenu() {
+        let header = '', resources = [];
+        try {
+            const [verbose, table] = await Promise.all(
+                [runTwingate('status', '-v'), runTwingate('resources')]);
+            header = verbose.trim().split('\n')[0];
+            resources = parseResources(table);
+        } catch (e) {
+            header = 'not installed';
+        }
+        if (this._destroyed)
+            return;
+
+        this.menu.setHeader('network-vpn-symbolic', 'Twingate', header);
+        this._resources.removeAll();
+        for (const r of resources)
+            this._resources.addMenuItem(new PopupMenu.PopupMenuItem(`${r.name}  ${r.alias || r.address}`));
+        if (!resources.length) {
+            this._resources.addMenuItem(new PopupMenu.PopupMenuItem(
+                this.checked ? 'No resources' : this.subtitle ?? 'Off', {reactive: false}));
+        }
+    }
+
     async _refresh() {
         if (this._busy || this._refreshing || this._destroyed)
             return;
         this._refreshing = true;
         let transitional = false;
         try {
-            const status = parseStatus(await runStatus());
+            const status = parseStatus(await runTwingate('status'));
             if (this._destroyed)
                 return;
             transitional = status.transitional;

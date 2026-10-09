@@ -108,8 +108,8 @@ No runtime files. `uninstall.sh` still removes the old 1.2.0 cache files
 
 - The tile is a `QuickMenuToggle`: clicking the tile still starts/stops,
   the arrow opens the menu.
-- Menu header: the status, plus the user from `twingate status -v`
-  (`Online: <user>`) when there is one.
+- Menu header: "Twingate", subtitle = first line of `twingate status -v`
+  as printed (e.g. `Online: User`); `not installed` if it cannot run.
 - Opening the menu runs `twingate resources` once (not on the poll timer)
   and lists one row per resource: name, then alias if set (`-` = none),
   else address.
