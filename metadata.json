@@ -3,6 +3,6 @@
   "name": "Twingate Toggle",
   "description": "Quick Settings toggle to start and stop the Twingate client",
   "shell-version": ["46", "47", "48"],
-  "version": 5,
-  "version-name": "1.4.0"
+  "version": 6,
+  "version-name": "1.4.1"
 }

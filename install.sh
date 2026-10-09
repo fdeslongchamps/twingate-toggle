@@ -67,7 +67,8 @@ fi
 version="$(grep -oP '"version-name":\s*"\K[^"]+' "$SRC_DIR/metadata.json" || echo unknown)"
 info "Installing Twingate Toggle $version to $DEST_DIR"
 mkdir -p "$DEST_DIR"
-install -m 644 "$SRC_DIR/extension.js" "$SRC_DIR/lib.js" "$SRC_DIR/metadata.json" "$DEST_DIR/"
+install -m 644 "$SRC_DIR/extension.js" "$SRC_DIR/lib.js" "$SRC_DIR/metadata.json" \
+    "$SRC_DIR/twingate-symbolic.svg" "$DEST_DIR/"
 
 # Enable it. If the shell has not seen the extension yet (first install),
 # `gnome-extensions enable` fails, so also add it to the enabled list directly;

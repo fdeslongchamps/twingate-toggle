@@ -6,7 +6,7 @@ click, without opening a terminal.
 
 - The tile shows whether Twingate is on, and updates as soon as the Twingate
   service starts or stops.
-- A small VPN icon appears in the top bar while Twingate is on.
+- A small Twingate icon appears in the top bar while Twingate is on.
 - Starting and stopping go through systemd. GNOME shows its own password
   dialog, and remembers the password for a few minutes. To never be asked,
   answer yes when `install.sh` offers the password-free toggle (one sudo

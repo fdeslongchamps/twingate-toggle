@@ -15,7 +15,7 @@ User stories:
 
 - As a user, I click the **Twingate** tile to start or stop the client.
 - As a user, I can see at a glance whether Twingate is on: the tile is checked
-  and a VPN icon shows in the top bar.
+  and a Twingate icon shows in the top bar.
 - As a user, when starting or stopping needs my password, GNOME's password
   dialog appears.
 - As a user, when a start or stop fails, I get a notification that says why.
@@ -55,6 +55,7 @@ There is no build. "The build passes" means the syntax checks and `gjs -m test.g
 
 ```
 extension.js    → the extension (toggle, menu, indicator, CLI helpers)
+twingate-symbolic.svg → tile, menu and top-bar icon (simplified Twingate mark)
 lib.js          → pure parsers for `twingate` output (no Shell imports)
 test.gjs        → assert-based tests for lib.js
 metadata.json   → uuid, supported shell versions, version + version-name

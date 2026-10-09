@@ -19,6 +19,9 @@ const POLL_MS = 30000;
 const FAST_POLL_MS = 2000;
 const SIGNAL_DEBOUNCE_MS = 300;
 const UNIT_PATH = '/org/freedesktop/systemd1/unit/twingate_2eservice';
+// The -symbolic suffix makes the shell recolor it like its own icons.
+const ICON = Gio.FileIcon.new(Gio.File.new_for_uri(
+    new URL('twingate-symbolic.svg', import.meta.url).href));
 
 // Short command whose output we read directly (twingate status, resources).
 async function runTwingate(...args) {
@@ -52,7 +55,7 @@ class TwingateToggle extends QuickMenuToggle {
     constructor() {
         super({
             title: 'Twingate',
-            iconName: 'network-vpn-symbolic',
+            gicon: ICON,
             toggleMode: true,
         });
 
@@ -64,7 +67,7 @@ class TwingateToggle extends QuickMenuToggle {
         // 'clicked' only fires on a real user click, not when we set `checked`.
         this.connect('clicked', () => this._onClicked());
 
-        this.menu.setHeader('network-vpn-symbolic', 'Twingate');
+        this.menu.setHeader(ICON, 'Twingate');
         this._resources = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._resources);
         // Read resources only when the menu opens, not on the poll timer.
@@ -149,7 +152,7 @@ class TwingateToggle extends QuickMenuToggle {
         if (this._destroyed)
             return;
 
-        this.menu.setHeader('network-vpn-symbolic', 'Twingate', header);
+        this.menu.setHeader(ICON, 'Twingate', header);
         this._resources.removeAll();
         for (const r of resources) {
             const item = new PopupMenu.PopupMenuItem(`${r.name}  ${r.alias || r.address}`);
@@ -219,7 +222,7 @@ class TwingateIndicator extends SystemIndicator {
 
         // Small icon in the top bar, visible only while Twingate is on.
         this._indicator = this._addIndicator();
-        this._indicator.iconName = 'network-vpn-symbolic';
+        this._indicator.gicon = ICON;
 
         const toggle = new TwingateToggle();
         toggle.bind_property('checked', this._indicator, 'visible',

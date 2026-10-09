@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.1
+
+- The tile, menu and top bar show a Twingate icon instead of the generic VPN
+  icon. It follows the theme colors like GNOME's own icons.
+
 ## 1.4.0
 
 - The tile has a menu (the arrow): it shows who you are signed in as and lists
