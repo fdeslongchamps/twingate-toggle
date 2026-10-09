@@ -15,8 +15,9 @@ click, without opening a terminal.
 ## Requirements
 
 - GNOME Shell 46, 47 or 48
-- The [Twingate Linux client](https://www.twingate.com/download), already
-  set up (`sudo twingate setup`)
+- The [Twingate Linux client](https://www.twingate.com/download), set up with
+  `sudo twingate setup` (the install script offers to install the client and
+  run the setup if needed)
 - `zenity` for the password window (the install script offers to install it)
 
 ## Install
