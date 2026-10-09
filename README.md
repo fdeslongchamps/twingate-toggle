@@ -11,6 +11,9 @@ click, without opening a terminal.
   dialog, and remembers the password for a few minutes. To never be asked,
   answer yes when `install.sh` offers the password-free toggle (one sudo
   password at install; `uninstall.sh` removes it).
+- Open the tile's menu (the arrow) to see who you are signed in as and your
+  resources. Click a resource to copy its alias or address; if it needs
+  authentication, clicking signs you in to it instead.
 - If starting or stopping fails, the reason is shown as a notification.
 
 ## Requirements

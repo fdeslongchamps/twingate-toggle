@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+- The tile has a menu (the arrow): it shows who you are signed in as and lists
+  your Twingate resources. Click a resource to copy its alias or address, or to
+  sign in to it when it needs authentication.
+
 ## 1.3.0
 
 - Start and stop go through systemd over D-Bus instead of `twingate start/stop`

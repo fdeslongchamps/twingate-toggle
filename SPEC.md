@@ -1,6 +1,6 @@
 # Spec: Twingate Toggle
 
-Baseline spec of the extension as of 1.3.0, plus the 1.4.0 resources menu. New work should update this file
+Baseline spec of the extension as of 1.4.0. New work should update this file
 first, then the code.
 
 ## Objective
@@ -69,7 +69,7 @@ Installed to `${XDG_DATA_HOME:-~/.local/share}/gnome-shell/extensions/twingate-t
 No runtime files. `uninstall.sh` still removes the old 1.2.0 cache files
 (`twingate-toggle.log`, `twingate-toggle-askpass.sh`).
 
-## Behavior (current, 1.3.0)
+## Behavior (current, 1.4.0)
 
 ### State
 

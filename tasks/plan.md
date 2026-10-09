@@ -10,4 +10,4 @@ Spec: `SPEC.md` → Behavior → Resources menu.
       loaded on menu open. Accept: syntax checks pass; manual check 7 shows rows.
 - [x] 4. Row actions: click copies alias-or-address; auth status set → `twingate auth <name>`.
       Accept: manual check 7.
-- [ ] 5. Release: README, CHANGELOG, metadata 1.4.0.
+- [x] 5. Release: README, CHANGELOG, metadata 1.4.0.
