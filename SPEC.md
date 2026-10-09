@@ -200,6 +200,7 @@ The baseline is met when all of these hold:
 6. **Installed copy is old.** `gnome-extensions info` shows version 1 installed;
    the repo is at version 3. Run `./install.sh` and log out/in before manual
    checks.
-7. **Scope beyond baseline.** Any new features you want specced (for example
-   showing the network name, start at login, a prefs window)? None are in
-   scope until you name them.
+7. **Next feature: first-run setup dialog.** Direction agreed in
+   `docs/ideas/first-run-setup.md`: a setup dialog with paste-this terminal
+   steps, start/stop through systemd D-Bus, and no root from the extension.
+   To be specced here before building.
