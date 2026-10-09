@@ -1,0 +1,7 @@
+{
+  "uuid": "twingate-toggle@local",
+  "name": "Twingate Toggle",
+  "description": "Quick Settings toggle to start and stop the Twingate client",
+  "shell-version": ["46", "47", "48"],
+  "version": 1
+}
