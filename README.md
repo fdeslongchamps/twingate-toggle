@@ -4,7 +4,7 @@ A GNOME Shell extension that adds a **Twingate** tile to Quick Settings (the
 top-right menu), so you can start and stop the Twingate Linux client with one
 click, without opening a terminal.
 
-- The tile shows the current client state (`online`, `not running`, …) and
+  updates as soon as the Twingate service starts or stops.
   refreshes every 5 seconds.
 - A small VPN icon appears in the top bar while Twingate is on.
 - `twingate start`/`stop` call `sudo`. The extension opens a password window

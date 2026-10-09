@@ -9,7 +9,12 @@ import {QuickToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quick
 Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async');
 Gio._promisify(Gio.Subprocess.prototype, 'wait_async', 'wait_finish');
 
-const POLL_SECONDS = 5;
+// systemd tells us when the service starts/stops; polling only catches
+// changes inside the client (authenticating -> online), so it can be slow.
+const POLL_MS = 30000;
+const FAST_POLL_MS = 2000;
+const SIGNAL_DEBOUNCE_MS = 300;
+const UNIT_PATH = '/org/freedesktop/systemd1/unit/twingate_2eservice';
 const CACHE_DIR = GLib.get_user_cache_dir();
 const LOG_PATH = GLib.build_filenamev([CACHE_DIR, 'twingate-toggle.log']);
 const ASKPASS_PATH = GLib.build_filenamev([CACHE_DIR, 'twingate-toggle-askpass.sh']);
@@ -88,17 +93,35 @@ class TwingateToggle extends QuickToggle {
         });
 
         this._busy = false;
+        this._refreshing = false;
         this._destroyed = false;
+        this._timeoutId = 0;
 
         // 'clicked' only fires on a real user click, not when we set `checked`.
         this.connect('clicked', () => this._onClicked());
 
+        // systemd only emits unit signals once some client has subscribed.
+        // shortcut: never Unsubscribe, since that would also drop the shared
+        // gnome-shell bus connection's subscription other code may rely on.
+        Gio.DBus.system.call('org.freedesktop.systemd1', '/org/freedesktop/systemd1',
+            'org.freedesktop.systemd1.Manager', 'Subscribe', null, null,
+            Gio.DBusCallFlags.NONE, -1, null, null);
+        this._unitSignalId = Gio.DBus.system.signal_subscribe(
+            'org.freedesktop.systemd1', 'org.freedesktop.DBus.Properties',
+            'PropertiesChanged', UNIT_PATH, null, Gio.DBusSignalFlags.NONE,
+            () => this._schedule(SIGNAL_DEBOUNCE_MS));
+
         this._refresh();
-        this._timeoutId = GLib.timeout_add_seconds(
-            GLib.PRIORITY_DEFAULT, POLL_SECONDS, () => {
-                this._refresh();
-                return GLib.SOURCE_CONTINUE;
-            });
+    }
+
+    _schedule(ms) {
+        if (this._timeoutId)
+            GLib.source_remove(this._timeoutId);
+        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, ms, () => {
+            this._timeoutId = 0;
+            this._refresh();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     async _onClicked() {
@@ -143,26 +166,35 @@ class TwingateToggle extends QuickToggle {
     }
 
     async _refresh() {
-        if (this._busy || this._destroyed)
+        if (this._busy || this._refreshing || this._destroyed)
             return;
+        this._refreshing = true;
+        let transitional = false;
         try {
             const out = (await runStatus()).trim();
             if (this._destroyed)
                 return;
             // Stay "on" while the client starts or waits for authentication,
             // otherwise the tile would flip back off before the user logs in.
-            this.checked = /\b(online|authenticating|starting)\b/i.test(out);
+            transitional = /\b(authenticating|starting)\b/i.test(out);
+            this.checked = transitional || /\bonline\b/i.test(out);
             this.subtitle = out.split('\n')[0].slice(0, 24) || null;
         } catch (e) {
             if (this._destroyed)
                 return;
             this.checked = false;
             this.subtitle = 'not installed';
+        } finally {
+            this._refreshing = false;
         }
+        // Keep a refresh a systemd signal queued while we were running.
+        if (!this._timeoutId)
+            this._schedule(transitional ? FAST_POLL_MS : POLL_MS);
     }
 
     destroy() {
         this._destroyed = true;
+        Gio.DBus.system.signal_unsubscribe(this._unitSignalId);
         if (this._timeoutId) {
             GLib.source_remove(this._timeoutId);
             this._timeoutId = 0;
