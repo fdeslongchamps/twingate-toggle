@@ -114,7 +114,7 @@ No runtime files. `uninstall.sh` still removes the old 1.2.0 cache files
   and lists one row per resource: name, then alias if set (`-` = none),
   else address.
 - Parsing (`parseResources` in `lib.js`): tab-separated, first line is the
-  header, columns name / address / alias / auth status, cells trimmed, blank
+  header, columns name / address / alias / auth status, cells trimmed, `-` = empty, blank
   lines skipped. Output without that header (offline, error) → no rows.
 - No rows → one insensitive row "No resources" (or the status when off).
 - Clicking a row copies alias-or-address to the clipboard. If its auth status
@@ -137,7 +137,7 @@ No runtime files. `uninstall.sh` still removes the old 1.2.0 cache files
   `50-twingate-toggle.rules`: lets this user, at an active local session,
   start/stop only `twingate.service` without a password. `uninstall.sh`
   removes it.
-- Copies `extension.js` and `metadata.json`, then enables the extension
+- Copies `extension.js`, `lib.js` and `metadata.json`, then enables the extension
   (falls back to editing `enabled-extensions` in gsettings on first install).
 - Safe to run again to update.
 

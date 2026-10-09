@@ -6,6 +6,8 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {QuickToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
+import {parseStatus} from './lib.js';
+
 Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async');
 Gio._promisify(Gio.DBusConnection.prototype, 'call');
 
@@ -129,14 +131,12 @@ class TwingateToggle extends QuickToggle {
         this._refreshing = true;
         let transitional = false;
         try {
-            const out = (await runStatus()).trim();
+            const status = parseStatus(await runStatus());
             if (this._destroyed)
                 return;
-            // Stay "on" while the client starts or waits for authentication,
-            // otherwise the tile would flip back off before the user logs in.
-            transitional = /\b(authenticating|starting)\b/i.test(out);
-            this.checked = transitional || /\bonline\b/i.test(out);
-            this.subtitle = out.split('\n')[0].slice(0, 24) || null;
+            transitional = status.transitional;
+            this.checked = status.on;
+            this.subtitle = status.subtitle;
         } catch (e) {
             if (this._destroyed)
                 return;
