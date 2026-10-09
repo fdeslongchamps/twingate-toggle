@@ -7,7 +7,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {QuickToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 Gio._promisify(Gio.Subprocess.prototype, 'communicate_utf8_async');
-Gio._promisify(Gio.Subprocess.prototype, 'wait_async', 'wait_finish');
+Gio._promisify(Gio.DBusConnection.prototype, 'call');
 
 // systemd tells us when the service starts/stops; polling only catches
 // changes inside the client (authenticating -> online), so it can be slow.
@@ -15,31 +15,6 @@ const POLL_MS = 30000;
 const FAST_POLL_MS = 2000;
 const SIGNAL_DEBOUNCE_MS = 300;
 const UNIT_PATH = '/org/freedesktop/systemd1/unit/twingate_2eservice';
-const CACHE_DIR = GLib.get_user_cache_dir();
-const LOG_PATH = GLib.build_filenamev([CACHE_DIR, 'twingate-toggle.log']);
-const ASKPASS_PATH = GLib.build_filenamev([CACHE_DIR, 'twingate-toggle-askpass.sh']);
-
-// The twingate CLI calls sudo internally. Without a terminal, sudo can only
-// ask for the password through an "askpass" helper, so we provide one that
-// opens a small password window.
-function ensureAskpass() {
-    let script = null;
-    if (GLib.find_program_in_path('zenity')) {
-        script = '#!/bin/sh\n' +
-            'exec zenity --entry --hide-text --title="Twingate" --text="${1:-Mot de passe}"\n';
-    } else if (GLib.file_test('/usr/bin/ssh-askpass', GLib.FileTest.IS_EXECUTABLE)) {
-        script = '#!/bin/sh\nexec /usr/bin/ssh-askpass "$@"\n';
-    }
-    if (!script)
-        return false;
-    try {
-        GLib.file_set_contents(ASKPASS_PATH, script);
-        return true;
-    } catch (e) {
-        console.error(`Twingate toggle: cannot write askpass helper: ${e}`);
-        return false;
-    }
-}
 
 // Short command whose output we read directly (twingate status).
 async function runStatus() {
@@ -50,37 +25,22 @@ async function runStatus() {
     return stdout ?? '';
 }
 
-// start/stop: output goes to a log file, so a background process started by
-// the twingate CLI cannot keep us waiting on an open pipe.
+// Start/stop twingate.service through systemd. GNOME's own polkit password
+// dialog authorizes it, so no sudo or askpass helper is needed.
 async function runAction(sub) {
-    const haveAskpass = ensureAskpass();
-
-    const launcher = new Gio.SubprocessLauncher({flags: Gio.SubprocessFlags.NONE});
-    if (haveAskpass) {
-        launcher.setenv('SUDO_ASKPASS', ASKPASS_PATH, true);
-        // sudo only uses an askpass helper without a terminal if DISPLAY is set.
-        launcher.setenv('DISPLAY', GLib.getenv('DISPLAY') ?? ':0', false);
+    const method = sub === 'start' ? 'StartUnit' : 'StopUnit';
+    const args = unit => new GLib.Variant('(ss)', [unit, 'replace']);
+    await Gio.DBus.system.call('org.freedesktop.systemd1', '/org/freedesktop/systemd1',
+        'org.freedesktop.systemd1.Manager', method, args('twingate.service'), null,
+        Gio.DBusCallFlags.ALLOW_INTERACTIVE_AUTHORIZATION, -1, null);
+    // `twingate start` also starts this user unit, which shows Twingate's sign-in.
+    if (sub === 'start') {
+        await Gio.DBus.session.call('org.freedesktop.systemd1', '/org/freedesktop/systemd1',
+            'org.freedesktop.systemd1.Manager', 'StartUnit',
+            args('twingate-desktop-notifier.service'), null,
+            Gio.DBusCallFlags.NONE, -1, null).catch(e =>
+            console.warn(`Twingate toggle: cannot start the notifier: ${e}`));
     }
-
-    const proc = launcher.spawnv([
-        'sh', '-c',
-        `chmod 700 "$2" 2>/dev/null; twingate ${sub} >"$1" 2>&1`,
-        'sh', LOG_PATH, ASKPASS_PATH,
-    ]);
-    await proc.wait_async(null);
-    // get_exit_status() is only valid if the process exited normally.
-    const status = proc.get_if_exited() ? proc.get_exit_status() : -1;
-
-    let output = '';
-    try {
-        const [ok, bytes] = GLib.file_get_contents(LOG_PATH);
-        if (ok)
-            output = new TextDecoder().decode(bytes).trim();
-    } catch (e) {
-        // no log written
-    }
-    console.log(`Twingate toggle: "twingate ${sub}" exited ${status}: ${output}`);
-    return {status, output, haveAskpass};
 }
 
 const TwingateToggle = GObject.registerClass(
@@ -131,12 +91,12 @@ class TwingateToggle extends QuickToggle {
         const wantOn = this.checked;
         this.subtitle = wantOn ? 'starting…' : 'stopping…';
 
-        let result = {status: -1, output: '', haveAskpass: true};
+        let error = null;
         try {
-            result = await runAction(wantOn ? 'start' : 'stop');
+            await runAction(wantOn ? 'start' : 'stop');
         } catch (e) {
             console.error(`Twingate toggle: ${e}`);
-            result.output = `${e}`;
+            error = e;
         }
 
         // Give the client a moment to change state before reading it,
@@ -154,14 +114,12 @@ class TwingateToggle extends QuickToggle {
 
         await this._refresh();
 
-        const failed = result.status !== 0 ||
-            (wantOn && !this.checked) || (!wantOn && this.checked);
-        if (failed) {
-            let message = result.output ||
-                `The twingate command exited with code ${result.status}.`;
-            if (!result.haveAskpass && /askpass|terminal is required/i.test(message))
-                message += '\n\nInstalle zenity pour la fenêtre de mot de passe : sudo apt install zenity';
-            Main.notify('Twingate', message);
+        if (error) {
+            // Strip the "GDBus.Error:org.freedesktop..." prefix from the message.
+            Gio.DBusError.strip_remote_error(error);
+            Main.notify('Twingate', error.message);
+        } else if (wantOn !== this.checked) {
+            Main.notify('Twingate', `Twingate did not ${wantOn ? 'start' : 'stop'}.`);
         }
     }
 

@@ -1,6 +1,6 @@
 # Spec: Twingate Toggle
 
-Baseline spec of the extension as of 1.2.0. New work should update this file
+Baseline spec of the extension as of 1.3.0. New work should update this file
 first, then the code.
 
 ## Objective
@@ -16,10 +16,11 @@ User stories:
 - As a user, I click the **Twingate** tile to start or stop the client.
 - As a user, I can see at a glance whether Twingate is on: the tile is checked
   and a VPN icon shows in the top bar.
-- As a user, when `sudo` needs my password, a password window appears.
+- As a user, when starting or stopping needs my password, GNOME's password
+  dialog appears.
 - As a user, when a start or stop fails, I get a notification that says why.
 - As a new user, one script installs the extension and helps me install and
-  set up the Twingate client and zenity.
+  set up the Twingate client.
 
 ## Tech Stack
 
@@ -27,7 +28,8 @@ User stories:
   versions 46, 47, 48 (`metadata.json`)
 - GObject Introspection: `Gio`, `GLib`, `GObject`
 - systemd over the D-Bus system bus (`twingate.service` unit signals)
-- External programs: `twingate` CLI, `sudo`, `zenity` or `/usr/bin/ssh-askpass`
+- systemd `StartUnit`/`StopUnit` over D-Bus, authorized by polkit
+- External programs: `twingate` CLI (status only)
 - Bash for `install.sh` and `uninstall.sh`
 - No package manager, no build step, no runtime dependencies to install
 
@@ -40,7 +42,6 @@ Install / update:  ./install.sh        (then log out and back in on Wayland)
 Uninstall:         ./uninstall.sh
 Extension status:  gnome-extensions info twingate-toggle@local
 Logs:              journalctl --user -b | grep -i twingate
-Last CLI output:   cat ~/.cache/twingate-toggle.log
 ```
 
 There is no build. "The build passes" means both syntax checks pass.
@@ -50,7 +51,7 @@ There is no build. "The build passes" means both syntax checks pass.
 ```
 extension.js    → the whole extension (toggle, indicator, CLI helpers)
 metadata.json   → uuid, supported shell versions, version + version-name
-install.sh      → per-user install, client/zenity setup, enable
+install.sh      → per-user install, client setup, enable
 uninstall.sh    → disable, remove files and cache
 README.md       → user docs
 CHANGELOG.md    → one section per version-name
@@ -58,10 +59,10 @@ SPEC.md         → this file
 ```
 
 Installed to `${XDG_DATA_HOME:-~/.local/share}/gnome-shell/extensions/twingate-toggle@local/`.
-Runtime files in `${XDG_CACHE_HOME:-~/.cache}`: `twingate-toggle.log`,
-`twingate-toggle-askpass.sh`.
+No runtime files. `uninstall.sh` still removes the old 1.2.0 cache files
+(`twingate-toggle.log`, `twingate-toggle-askpass.sh`).
 
-## Behavior (current, 1.2.0)
+## Behavior (current, 1.3.0)
 
 ### State
 
@@ -85,18 +86,16 @@ Runtime files in `${XDG_CACHE_HOME:-~/.cache}`: `twingate-toggle.log`,
 
 ### Start / stop
 
-- A click runs `twingate start` (tile now checked) or `twingate stop`.
+- A click calls systemd `StartUnit` (tile now checked) or `StopUnit` on
+  `twingate.service` over the system bus, with interactive authorization, so
+  GNOME's polkit dialog asks for the password when needed. A start also
+  starts the user unit `twingate-desktop-notifier.service` (Twingate's
+  sign-in); if that fails, only a warning is logged.
 - Clicks during a running start/stop are ignored.
 - Subtitle shows `starting…` / `stopping…` while it runs.
-- `SUDO_ASKPASS` points to a helper that runs zenity (or `ssh-askpass`);
-  `DISPLAY` is set if missing (sudo needs it to use askpass).
-- CLI output goes to `~/.cache/twingate-toggle.log`, not a pipe, so a
-  background child of the CLI cannot block the extension.
-- 1.5 s after the command ends, refresh. It failed if the exit code is not 0
-  or the state does not match what the user asked. On failure, notify with
-  the CLI output (or the exit code if there is none). If there is no askpass
-  helper and the output mentions askpass/terminal, add a hint to install
-  zenity.
+- 1.5 s after the call returns, refresh. It failed if the call threw or the
+  state does not match what the user asked. On failure, notify with the
+  D-Bus error message, or "Twingate did not start/stop."
 
 ### Disable
 
@@ -110,8 +109,10 @@ Runtime files in `${XDG_CACHE_HOME:-~/.cache}`: `twingate-toggle.log`,
 - If `twingate` is missing, offers to install it with the official script.
 - If `/etc/twingate/network.conf` is empty or missing, offers
   `sudo twingate setup`.
-- If neither zenity nor ssh-askpass exists, offers to install zenity with apt
-  or dnf.
+- If `/etc/polkit-1/rules.d` exists and the rule is not there yet, offers
+  `50-twingate-toggle.rules`: lets this user, at an active local session,
+  start/stop only `twingate.service` without a password. `uninstall.sh`
+  removes it.
 - Copies `extension.js` and `metadata.json`, then enables the extension
   (falls back to editing `enabled-extensions` in gsettings on first install).
 - Safe to run again to update.
@@ -149,7 +150,7 @@ Today there are no automated tests.
   2. Click on → password window → tile checked, top-bar icon visible.
   3. Click off → tile unchecked, icon hidden.
   4. `sudo systemctl stop twingate` in a terminal → tile turns off within ~1 s.
-  5. Cancel the password window → notification with the sudo error.
+  5. Cancel the password window → notification with the polkit error.
   6. Disable the extension → no errors in `journalctl --user -b`.
 - **Proposed (see Open Questions):** move the status parsing into a pure
   function and test it with a small `gjs -m` script with asserts. It is the
@@ -184,13 +185,7 @@ The baseline is met when all of these hold:
 
 ## Open Questions
 
-1. **README is broken.** Commit 141dab7 replaced the first line of the first
-   bullet instead of the second, so it now reads "…updates as soon as the
-   Twingate service starts or stops. refreshes every 5 seconds." Fix as the
-   first task?
-2. **Language.** UI text is English, but two strings are French: the password
-   prompt (`Mot de passe`) and the zenity hint (`Installe zenity…`). English
-   everywhere, French everywhere, or translations (gettext)?
+1. **README intro** and 2. **French strings**: resolved in 1.3.0.
 3. **Shell versions.** Only 46–48 are listed. Should 49+ be supported? That
    needs testing on those versions.
 4. **Unit tests.** OK to extract the status parsing into a pure function and

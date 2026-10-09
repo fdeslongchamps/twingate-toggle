@@ -4,13 +4,14 @@ A GNOME Shell extension that adds a **Twingate** tile to Quick Settings (the
 top-right menu), so you can start and stop the Twingate Linux client with one
 click, without opening a terminal.
 
-  updates as soon as the Twingate service starts or stops.
-  refreshes every 5 seconds.
+- The tile shows whether Twingate is on, and updates as soon as the Twingate
+  service starts or stops.
 - A small VPN icon appears in the top bar while Twingate is on.
-- `twingate start`/`stop` call `sudo`. The extension opens a password window
-  (zenity) for this, since there is no terminal to type it in.
-- If a command fails, its output is shown as a notification. The last output
-  is also saved to `~/.cache/twingate-toggle.log`.
+- Starting and stopping go through systemd. GNOME shows its own password
+  dialog, and remembers the password for a few minutes. To never be asked,
+  answer yes when `install.sh` offers the password-free toggle (one sudo
+  password at install; `uninstall.sh` removes it).
+- If starting or stopping fails, the reason is shown as a notification.
 
 ## Requirements
 
@@ -18,7 +19,6 @@ click, without opening a terminal.
 - The [Twingate Linux client](https://www.twingate.com/download), set up with
   `sudo twingate setup` (the install script offers to install the client and
   run the setup if needed)
-- `zenity` for the password window (the install script offers to install it)
 
 ## Install
 
@@ -44,5 +44,4 @@ To update, `git pull` and run `./install.sh` again, then log out and back in.
 - **The tile doesn't appear:** check it is enabled with
   `gnome-extensions info twingate-toggle@local`, and look for errors with
   `journalctl --user -b | grep -i twingate`.
-- **"a terminal is required" error:** install zenity (`sudo apt install zenity`).
 - **Tile says "not installed":** the `twingate` command is not in your `PATH`.

@@ -44,22 +44,26 @@ if command -v twingate >/dev/null && [ ! -s /etc/twingate/network.conf ]; then
     fi
 fi
 
-# zenity provides the password window used when twingate calls sudo.
-if ! command -v zenity >/dev/null && [ ! -x /usr/bin/ssh-askpass ]; then
-    warn "zenity is not installed; it is needed for the password prompt."
-    if command -v apt-get >/dev/null; then
-        if ask "Install zenity now with apt?"; then
-            sudo apt-get install -y zenity
-        fi
-    elif command -v dnf >/dev/null; then
-        if ask "Install zenity now with dnf?"; then
-            sudo dnf install -y zenity
-        fi
-    else
-        warn "Install zenity with your package manager."
-    fi
+# Optional polkit rule: let this user start/stop twingate.service without a
+# password. Without it, GNOME asks for the password on each toggle.
+# rules.d is often root-only, so check for the rule with sudo -n (no prompt);
+# if that fails we just ask again, and rewriting the rule is harmless.
+POLKIT_RULE=/etc/polkit-1/rules.d/50-twingate-toggle.rules
+if [ -d /etc/polkit-1/rules.d ] && ! sudo -n test -e "$POLKIT_RULE" 2>/dev/null &&
+    ask "Let $USER turn Twingate on/off without a password (needs sudo once)?"; then
+    sudo tee "$POLKIT_RULE" >/dev/null <<EOF
+// Let $USER start/stop twingate.service without a password (Twingate Toggle).
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.systemd1.manage-units" &&
+        action.lookup("unit") == "twingate.service" &&
+        (action.lookup("verb") == "start" || action.lookup("verb") == "stop") &&
+        subject.user == "$USER" && subject.local && subject.active) {
+        return polkit.Result.YES;
+    }
+});
+EOF
+    info "Password-free toggle enabled ($POLKIT_RULE)."
 fi
-
 version="$(grep -oP '"version-name":\s*"\K[^"]+' "$SRC_DIR/metadata.json" || echo unknown)"
 info "Installing Twingate Toggle $version to $DEST_DIR"
 mkdir -p "$DEST_DIR"
