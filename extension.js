@@ -20,8 +20,8 @@ const FAST_POLL_MS = 2000;
 const SIGNAL_DEBOUNCE_MS = 300;
 const UNIT_PATH = '/org/freedesktop/systemd1/unit/twingate_2eservice';
 // The -symbolic suffix makes the shell recolor it like its own icons.
-const ICON = Gio.FileIcon.new(Gio.File.new_for_uri(
-    new URL('twingate-symbolic.svg', import.meta.url).href));
+const ICON = Gio.FileIcon.new(Gio.File.new_for_uri(import.meta.url)
+    .get_parent().get_child('twingate-symbolic.svg'));
 
 // Short command whose output we read directly (twingate status, resources).
 async function runTwingate(...args) {

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.2
+
+- Fix the extension failing to load in 1.4.1: the icon path used `URL`,
+  which GJS does not provide.
+
 ## 1.4.1
 
 - The tile, menu and top bar show a Twingate icon instead of the generic VPN
